@@ -2,29 +2,37 @@ h1 {
   text-align: center;
   font-size: 50px;
   margin-top: 5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 5px rgb(228, 12, 163);
+  color: rgb(131, 33, 33);
 }
 
 #subtitles {
   display: flex;
-  justify-content: space- space-between;
+  justify-content: space-between;
   gap: 40px;
 }
 
 .party-item {
-  width: 500px;
+  color: rgb(172, 44, 44);
+  width: 600px;
+  font-size: 20px;
+  text-shadow: 0.5px 0.5px black;
   border: 1px solid black;
   border-radius: 3px;
   padding: 6px 10px;
   cursor: pointer;
+  transition: padding 0.15s ease, font-weight 0.15s ease,
+    background-color 0.15s ease;
 }
 .party-item:hover {
   background-color: rgb(169, 168, 173);
+  font-weight: bold;
+  padding: 15px 20px;
 }
 
-#party-details {
-  margin-top: 10px;
-  max-width: 900px;
-  line-height: 1.4;
+#right-column-div {
+  max-width: 80%;
 }
 
 h3 {
@@ -39,4 +47,25 @@ h3 {
 #location {
   font-style: italic;
   margin-bottom: 8px;
+}
+#description {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 30px;
+  color: rgb(131, 33, 33);
+  text-shadow: 0 1px black;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+#party-names {
+  font-weight: bold;
+}
+
+body {
+  background-color: lightgray;
 }

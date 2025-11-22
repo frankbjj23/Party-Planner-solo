@@ -14,10 +14,15 @@ const getParties = async () => {
 const renderParties = () => {
   const main = document.querySelector(`main`);
   const section = document.createElement(`section`);
+  section.id = "subtitles";
   const div = document.createElement(`div`);
   div.id = `party-names`;
   const detailsDiv = document.createElement(`div`);
-  section.id = "subtitles";
+  detailsDiv.id = `details-div`;
+  const leftColumnDiv = document.createElement(`div`);
+  leftColumnDiv.id = `left-column-div`;
+  const rightColumnDiv = document.createElement(`div`);
+  rightColumnDiv.id = `right-column-div`;
   const h1 = document.createElement(`h1`);
   h1.textContent = `Party Planner`;
   main.append(h1);
@@ -29,10 +34,14 @@ const renderParties = () => {
   h2PartyDetails.textContent = `Party Details`;
   h2Upcoming.classList.add("section-title");
   h2PartyDetails.classList.add("section-title");
-  h2Upcoming.append(div);
-  h2PartyDetails.append(detailsDiv);
-  section.append(h2Upcoming);
-  section.append(h2PartyDetails);
+  // h2Upcoming.append(div);
+  // h2PartyDetails.append(detailsDiv);
+  leftColumnDiv.append(h2Upcoming, div);
+  rightColumnDiv.append(h2PartyDetails, detailsDiv);
+  section.append(leftColumnDiv, rightColumnDiv);
+  // section.append(detailsDiv, div);
+  // section.append(h2Upcoming);
+  // section.append(h2PartyDetails);
   main.append(section);
 
   const partyPtags = state.parties.data.map((partyName) => {

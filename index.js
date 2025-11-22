@@ -3,12 +3,22 @@ const state = {
 };
 
 const getParties = async () => {
-  const response = await fetch(
-    `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2510-FTB-CT-WEB-PT/events`
-  );
-  const retrievedPartyInfo = await response.json();
-  state.parties = retrievedPartyInfo;
-  console.log(state.parties);
+  try {
+    const response = await fetch(
+      `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2510-FTB-CT-WEB-PT/events`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch parties: ${response.status}`);
+    }
+
+    const retrievedPartyInfo = await response.json();
+    state.parties = retrievedPartyInfo;
+    console.log(state.parties);
+  } catch (err) {
+    console.error(`Error in getParties:`, err);
+    throw err;
+  }
 };
 
 const renderParties = () => {
@@ -19,6 +29,7 @@ const renderParties = () => {
   div.id = `party-names`;
   const detailsDiv = document.createElement(`div`);
   detailsDiv.id = `details-div`;
+  detailsDiv.textContent = `Select a party to see its details.`;
   const leftColumnDiv = document.createElement(`div`);
   leftColumnDiv.id = `left-column-div`;
   const rightColumnDiv = document.createElement(`div`);
@@ -68,8 +79,16 @@ const renderParties = () => {
 };
 
 const init = async () => {
-  await getParties();
-  renderParties();
+  try {
+    await getParties();
+    renderParties();
+  } catch (err) {
+    console.error(`ERror starting app:`, err);
+    const main = document.querySelector(`main`);
+    main.innerHTML = `
+    <p>Sorry, something went wrong loading the parties. Please try again later.</p>
+    `;
+  }
 };
 
 init();

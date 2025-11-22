@@ -23,6 +23,7 @@ const getParties = async () => {
 
 const renderParties = () => {
   const main = document.querySelector(`main`);
+  main.innerHTML = "";
   const section = document.createElement(`section`);
   section.id = "subtitles";
   const div = document.createElement(`div`);
@@ -34,7 +35,7 @@ const renderParties = () => {
   leftColumnDiv.id = `left-column-div`;
   const rightColumnDiv = document.createElement(`div`);
   rightColumnDiv.id = `right-column-div`;
-  deleteButton = document.createElement(`button`);
+  const deleteButton = document.createElement(`button`);
   deleteButton.textContent = `DELETE`;
   deleteButton.id = `delete-button`;
   deleteButton.style.display = `none`;
@@ -47,12 +48,14 @@ const renderParties = () => {
   const h2PartyDetails = document.createElement(`h2`);
   h2PartyDetails.id = `party-details`;
   h2PartyDetails.textContent = `Party Details`;
+  const addNewParty = document.createElement(`h3`);
+  addNewParty.textContent = `Add a new party`;
   h2Upcoming.classList.add("section-title");
   h2PartyDetails.classList.add("section-title");
   leftColumnDiv.append(h2Upcoming, div);
   rightColumnDiv.append(h2PartyDetails, detailsDiv, deleteButton);
   section.append(leftColumnDiv, rightColumnDiv);
-  main.append(section);
+  main.append(section, addNewParty);
 
   const partyPtags = state.parties.data.map((partyName) => {
     return `<p class="party-item">${partyName.name}</p>`;
@@ -73,7 +76,29 @@ const renderParties = () => {
 
       detailsDiv.append(deleteButton);
       deleteButton.style.display = `block`;
+      deleteButton.dataset.id = party.id;
     });
+  });
+  deleteButton.addEventListener(`click`, async () => {
+    const partyId = deleteButton.dataset.id;
+    if (!partyId) return;
+
+    try {
+      const response = await fetch(
+        `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2510-FTB-CT-WEB-PT/events/${partyId}`,
+        {
+          method: `DELETE`,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to delete party: ${response.status}`);
+      }
+      await getParties();
+      renderParties();
+    } catch (err) {
+      console.error(`Error deleting party:`, err);
+      alert(`Sorry, something went wrong deleting that party.`);
+    }
   });
 };
 

@@ -39,6 +39,9 @@ const renderParties = () => {
   deleteButton.textContent = `DELETE`;
   deleteButton.id = `delete-button`;
   deleteButton.style.display = `none`;
+  const addPartyButton = document.createElement(`button`);
+  addPartyButton.id = `add-party-button`;
+  addPartyButton.textContent = `Add Party`;
   const h1 = document.createElement(`h1`);
   h1.textContent = `Party Planner`;
   main.append(h1);
@@ -49,13 +52,50 @@ const renderParties = () => {
   h2PartyDetails.id = `party-details`;
   h2PartyDetails.textContent = `Party Details`;
   const addNewParty = document.createElement(`h3`);
+  addNewParty.id = `new-party-column`;
   addNewParty.textContent = `Add a new party`;
+  const nameInput = document.createElement(`input`);
+  nameInput.type = `text`;
+  nameInput.id = `new-party-name`;
+  nameInput.placeholder = `Party Name`;
+  const nameLabel = document.createElement(`label`);
+  nameLabel.textContent = `Name`;
+  const descriptionInput = document.createElement(`input`);
+  descriptionInput.type = `text`;
+  descriptionInput.id = `new-party-description`;
+  descriptionInput.placeholder = `Party Description`;
+  const descriptionLabel = document.createElement(`label`);
+  descriptionLabel.textContent = `Description`;
+  const dateInput = document.createElement(`input`);
+  dateInput.type = `date`;
+  dateInput.id = `new-party-date`;
+  dateInput.placeholder = `Party Date`;
+  const dateLabel = document.createElement(`label`);
+  dateLabel.textContent = `Date`;
+  const locationInput = document.createElement(`input`);
+  locationInput.type = `text`;
+  locationInput.id = `new-party-location`;
+  locationInput.placeholder = `Party Location`;
+  const locationLabel = document.createElement(`label`);
+  locationLabel.textContent = `Location`;
   h2Upcoming.classList.add("section-title");
   h2PartyDetails.classList.add("section-title");
   leftColumnDiv.append(h2Upcoming, div);
   rightColumnDiv.append(h2PartyDetails, detailsDiv, deleteButton);
   section.append(leftColumnDiv, rightColumnDiv);
-  main.append(section, addNewParty);
+  main.append(
+    section,
+    addNewParty,
+    nameLabel,
+    nameInput,
+    descriptionLabel,
+    descriptionInput,
+    dateLabel,
+    dateInput,
+    locationLabel,
+    locationInput,
+    addPartyButton
+  );
 
   const partyPtags = state.parties.data.map((partyName) => {
     return `<p class="party-item">${partyName.name}</p>`;
@@ -98,6 +138,48 @@ const renderParties = () => {
     } catch (err) {
       console.error(`Error deleting party:`, err);
       alert(`Sorry, something went wrong deleting that party.`);
+    }
+  });
+
+  addPartyButton.addEventListener(`click`, async () => {
+    const name = nameInput.value.trim();
+    const description = descriptionInput.value.trim();
+    const formDate = dateInput.value;
+    const location = locationInput.value.trim();
+
+    if (!name || !description || !formDate || !location) {
+      alert(`Please fill out all fields before adding a party.`);
+      return;
+    }
+
+    const isoDate = new Date(formDate).toISOString();
+
+    const newParty = {
+      name,
+      description,
+      date: isoDate,
+      location,
+    };
+
+    try {
+      const response = await fetch(
+        `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2510-FTB-CT-WEB-PT/events`,
+        {
+          method: `Post`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newParty),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to create Party: ${response.status}`);
+      }
+      await getParties();
+      renderParties();
+    } catch (err) {
+      console.error(`Error creating party:`, err);
+      alert(`Sorry, something went wrong creating that party.`);
     }
   });
 };

@@ -27,7 +27,7 @@ h1 {
     background-color 0.15s ease;
 }
 .party-item:hover {
-  background-color: rgb(169, 168, 173);
+  background-color: rgb(173, 168, 169);
   font-weight: bold;
   padding: 15px 20px;
 }
@@ -70,4 +70,17 @@ h2 {
 
 body {
   background-color: lightgray;
+}
+
+input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  width: 40%;
+}
+
+#add-party-button {
+  background-color: rgb(122, 124, 240);
+  width: 40%;
+  height: 30px;
 }

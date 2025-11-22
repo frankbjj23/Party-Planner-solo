@@ -34,6 +34,10 @@ const renderParties = () => {
   leftColumnDiv.id = `left-column-div`;
   const rightColumnDiv = document.createElement(`div`);
   rightColumnDiv.id = `right-column-div`;
+  deleteButton = document.createElement(`button`);
+  deleteButton.textContent = `DELETE`;
+  deleteButton.id = `delete-button`;
+  deleteButton.style.display = `none`;
   const h1 = document.createElement(`h1`);
   h1.textContent = `Party Planner`;
   main.append(h1);
@@ -45,14 +49,9 @@ const renderParties = () => {
   h2PartyDetails.textContent = `Party Details`;
   h2Upcoming.classList.add("section-title");
   h2PartyDetails.classList.add("section-title");
-  // h2Upcoming.append(div);
-  // h2PartyDetails.append(detailsDiv);
   leftColumnDiv.append(h2Upcoming, div);
-  rightColumnDiv.append(h2PartyDetails, detailsDiv);
+  rightColumnDiv.append(h2PartyDetails, detailsDiv, deleteButton);
   section.append(leftColumnDiv, rightColumnDiv);
-  // section.append(detailsDiv, div);
-  // section.append(h2Upcoming);
-  // section.append(h2PartyDetails);
   main.append(section);
 
   const partyPtags = state.parties.data.map((partyName) => {
@@ -70,10 +69,10 @@ const renderParties = () => {
       <p id="date">${new Date(party.date).toLocaleString()}</p>
       <p id="location">${party.location}</p>
       <p id="description">${party.description}</p>
-      
-      
-      
       `;
+
+      detailsDiv.append(deleteButton);
+      deleteButton.style.display = `block`;
     });
   });
 };
